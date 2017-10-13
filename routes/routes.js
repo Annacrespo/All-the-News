@@ -2,11 +2,14 @@ var request = require("request");
 var cheerio = require("cheerio");
 var Note = require("../models/Note.js");
 var Article = require("../models/Article.js");
-
+var path = require("path");
 
 module.exports = function (app) {
   // Routes
   // ======
+  app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "../views/index.html"));
+  });
   // A GET request to scrape the echojs website
   app.get("/scrape", function (req, res) {
     //First, we grab the body of the html with request
@@ -34,7 +37,12 @@ module.exports = function (app) {
           // Or log the doc
           else {
             console.log(doc);
-          }
+            $("#articlesbutton").on(click, function() {
+              for (var i = 0; i < doc.length; i++) {
+                $("#articles").append(`<p>${doc[i]._id}</p>`);
+              }
+            }
+            )}
         });
       });
     });
@@ -52,9 +60,16 @@ module.exports = function (app) {
       // Or send the doc to the browser as a json object
       else {
         res.json(doc);
+        $("#articlesbutton").on(click, function() {
+          for (var i = 0; i < doc.length; i++) {
+            $("#articles").append(`<p>${doc[i]._id}</p>`);
+          }
+        })
       }
     });
   });
+
+  
 
   // Grab an article by it's ObjectId
   app.get("/articles/:id", function (req, res) {

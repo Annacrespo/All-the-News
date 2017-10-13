@@ -22,8 +22,9 @@ module.exports = function (app) {
         result.link = $(element).children("h2").children("a").attr("href");
         result.summary = $(element).children("p.summary").text();
         // Using our Article model, create a new entry
-        // This effectively passes the result object to the entry (and the title and link)
+        // This effectively passes the result object to the entry (and the title, link, and summary)
         var entry = new Article(result);
+
         // Now, save that entry to the db
         entry.save(function (err, doc) {
           // Log any errors
@@ -54,6 +55,7 @@ module.exports = function (app) {
       }
     });
   });
+
   // Grab an article by it's ObjectId
   app.get("/articles/:id", function (req, res) {
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...

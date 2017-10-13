@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({
 // Make public a static dir
 app.use(express.static("public"));
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/week18day3mongoose");
+mongoose.connect("mongodb://localhost/test");
 var db = mongoose.connection;
 // Show any mongoose errors
 db.on("error", function(error) {

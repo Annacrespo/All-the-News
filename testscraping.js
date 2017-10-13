@@ -13,8 +13,8 @@ request("https://www.nytimes.com/", function(error, response, html) {
       result.link = $(this).children("a").attr("href");
       result.summary = $(this).parent().find("ul > li").html();
 
-    // var itemHtml = $(element).html();
-    // console.log(itemHtml);
+    var itemHtml = $(element).html();
+    console.log(itemHtml);
     if (i===0) {
         console.log(result.summary);
     }

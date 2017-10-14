@@ -3,9 +3,21 @@
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + data[i].summary + "</p>");
+      $("#articles").append("<div><p data-id='" + data[i]._id + "'>" + data[i].title + "<br /><a href='" + data[i].link + ">'" + data[i].title + "</a>" + data[i].summary + "</p></div>");
     }
   });
+
+  function getArticles() {
+    setTimeout(function(){
+      $.getJSON("/articles", function (data) {
+        // For each one
+        for (var i = 0; i < data.length; i++) {
+          // Display the apropos information on the page
+          $("#articles").append("<div><p data-id='" + data[i]._id + "'>" + data[i].title + "<br /><a href='" + data[i].link + ">'" + data[i].title + "</a>" + data[i].summary + "</p></div>");
+        }
+      });
+    }, 500)
+  }
 
   // Whenever someone clicks a p tag
   $("#articlesButton").on("click", function () {
@@ -42,4 +54,11 @@
         //   $("#bodyinput").val(data.note.body);
         // }
       });
+  });
+
+  $("#scrapeButton").on("click", function(e){
+    e.preventDefault();
+    $.getJSON("/scrape", function(data){
+      getArticles();
+    });
   });

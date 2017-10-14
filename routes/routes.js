@@ -7,7 +7,7 @@ var path = require("path");
 module.exports = function (app) {
   // Routes
   // ======
-  app.get("/", function(req, res) {
+  app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "../views/index.html"));
   });
   // A GET request to scrape the echojs website
@@ -27,27 +27,24 @@ module.exports = function (app) {
         // Using our Article model, create a new entry
         // This effectively passes the result object to the entry (and the title, link, and summary)
         var entry = new Article(result);
-
-        // Now, save that entry to the db
-        entry.save(function (err, doc) {
-          // Log any errors
-          if (err) {
-            console.log(err);
-          }
-          // Or log the doc
-          else {
-            console.log(doc);
-            $("#articlesbutton").on(click, function() {
-              for (var i = 0; i < doc.length; i++) {
-                $("#articles").append(`<p>${doc[i]._id}</p>`);
-              }
+        if (result.title && result.link && result.summary) {
+          // Now, save that entry to the db
+          entry.save(function (err, doc) {
+            // Log any errors
+            if (err) {
+              console.log(err);
             }
-            )}
-        });
+            // Or log the doc
+            else {
+              console.log(true);
+            }
+          });
+        }
+
       });
     });
     // Tell the browser that we finished scraping the text
-    res.send("Scrape Complete");
+    res.json({"success": true});
   });
   // This will get the articles we scraped from the mongoDB
   app.get("/articles", function (req, res) {
@@ -60,16 +57,26 @@ module.exports = function (app) {
       // Or send the doc to the browser as a json object
       else {
         res.json(doc);
-        $("#articlesbutton").on(click, function() {
-          for (var i = 0; i < doc.length; i++) {
-            $("#articles").append(`<p>${doc[i]._id}</p>`);
-          }
-        })
       }
     });
   });
 
-  
+  //update articles
+  app.put("/articles", function(req, res){
+    //get an article by it's id 
+    //and update that articles saved 
+    //column/row from false to true
+
+    
+    res.json("updated article");
+  });
+
+  app.get("/saved/articles", function(req, res){
+    //get all of our saved articles 
+    res.json("saved articles");
+  });
+
+
 
   // Grab an article by it's ObjectId
   app.get("/articles/:id", function (req, res) {

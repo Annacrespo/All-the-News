@@ -19,10 +19,10 @@
     }, 500)
   }
 
-  // Whenever someone clicks a p tag
+  // Whenever someone clicks on saved articles button
   $("#articlesButton").on("click", function () {
     // Empty the notes from the note section
-    // $("#notes").empty();
+    $("#notes").empty();
     // Save the id from the p tag
     var thisId = $(this).attr("data-id");
 
@@ -40,19 +40,19 @@
         $("#articles").append("<p>" + data.link + "</p>");
 
         // An input to enter a new title
-        // $("#articles").append("<input id='titleinput' name='title' >");
-        // // A textarea to add a new note body
-        // $("#articles").append("<textarea id='bodyinput' name='body'></textarea>");
-        // // A button to submit a new note, with the id of the article saved to it
-        // $("#articles").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#articles").append("<input id='titleinput' name='title' >");
+        // A textarea to add a new note body
+        $("#articles").append("<textarea id='bodyinput' name='body'></textarea>");
+        // A button to submit a new note, with the id of the article saved to it
+        $("#articles").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
-        // // If there's a note in the article
-        // if (data.note) {
-        //   // Place the title of the note in the title input
-        //   $("#titleinput").val(data.note.title);
-        //   // Place the body of the note in the body textarea
-        //   $("#bodyinput").val(data.note.body);
-        // }
+        // If there's a note in the article
+        if (data.note) {
+          // Place the title of the note in the title input
+          $("#titleinput").val(data.note.title);
+          // Place the body of the note in the body textarea
+          $("#bodyinput").val(data.note.body);
+        }
       });
   });
 
@@ -60,5 +60,11 @@
     e.preventDefault();
     $.getJSON("/scrape", function(data){
       getArticles();
+      
     });
   });
+
+  $("articlesButton").on("click", function(e){
+    e.preventDefault();
+    displayArticles();
+  })

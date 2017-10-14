@@ -28,10 +28,18 @@ app.use(bodyParser.urlencoded({
 }));
 // Make public a static dir
 app.use(express.static("public"));
+
+var databaseUri = 'mongodb://localhost/test';
+
+if (process.env.MONGO_URI) {
+  mongoose.connect(process.env.MONGO_URI);
+  } else {
+    mongoose.connect(databaseUri);
+  }
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/test");
+// mongoose.connect("mongodb://localhost/test");
 var db = mongoose.connection;
-// Show any mongoose errors
+// // Show any mongoose errors
 db.on("error", function(error) {
   console.log("Mongoose Error: ", error);
 });

@@ -66,8 +66,20 @@ module.exports = function (app) {
     //get an article by it's id 
     //and update that articles saved 
     //column/row from false to true
+    Article.find({ "_id":req.params.id}, {"saved": true}, function (error, doc){
+      
+    })
+    Save.find({ "saved": true })
+    .populate("note")
+    .exec(function (err, data) {
+      console.log(data);
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(data);
+      }
+    });
 
-    
     res.json("updated article");
   });
 
@@ -76,7 +88,27 @@ module.exports = function (app) {
     res.json("saved articles");
   });
 
-
+  app.post("/saved/articles", function (req, res) {
+    var result = {};
+    result.id = req.body._id;
+    result.title = req.body.title;
+    result.link = req.body.link;
+    result.summary = req.body.summary;
+    // Save these results in an object that we'll push into the results array we defined earlier
+    var entry = new Save(result);
+    // Now, save that entry to the db
+    entry.save(function (err, doc) {
+        // Log any errors
+        if (err) {
+            console.log(err);
+            res.json(err);
+        }
+        // Or log the doc
+        else {
+            res.json(doc);
+        }
+    });
+  });
 
   // Grab an article by it's ObjectId
   app.get("/articles/:id", function (req, res) {
